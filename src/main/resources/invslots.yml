@@ -1,0 +1,15 @@
+InvSlot:
+  2:
+    item:
+      type: "APPLE"
+      name: "Slot?"
+      damage: "0"
+      amount: "%player_level%"
+      lore:
+        - "xxx"
+        - "xxx"
+    action:
+      - "command=player: user 巴拉巴拉"
+      - "command=op: OP指令"
+      - "command=server: 服务器指令"
+      - "tell: 发送消息 支持papi %player_name%"

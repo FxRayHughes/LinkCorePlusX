@@ -1,0 +1,5 @@
+AttributeMax:
+  stats_damage_max: 999.0
+AttributeMaxAbs:
+  stats_damage_max: 999.0
+pluginName: " "

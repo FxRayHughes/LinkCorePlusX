@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'io.izzel.taboolib' version '1.2'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.0-rc'
+}
+
+group = 'ray.mintcat.linkcoreplus'
+version = '3.2.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+taboolib {
+    tabooLibVersion = '5.45'
+    loaderVersion = '2.6'
+    classifier = null
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.spigotmc:spigot:1.12.2-R0.1-20190527.155359-34'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib'
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand name: rootProject.name, main: project.group + ".boot.PluginBoot", version: project.version, "libVersion": taboolib.tabooLibVersion
+    }
+}
