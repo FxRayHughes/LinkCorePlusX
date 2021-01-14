@@ -41,9 +41,9 @@ class ExpUpCommand:BaseMainCommand(),Helper {
                 return
             }
             val value = getValues(player,args[1])
-            val data = (Features.compileScript(value)?.eval() ?: "0.00").toString().toDouble()
+            val data = (Features.compileScript(value)?.eval() ?: "0.00").toString().toDouble().no2().toDouble()
             SkillAPI.getPlayerData(player).giveExp(data,ExpSource.COMMAND)
-            val message = (Features.compileScript(getValues(player,args[2]))?.eval() ?: "0.00").toString()
+            val message = (Features.compileScript(getValues(player,args[2]))?.eval() ?: "0.00").toString().toDouble().no2()
             player.info(LinkCorePlus.attribute.getStringColored("UPEXP.message").replace("{value}",message).replace("{exp}",data.toString()))
         }
         private fun Double.no2(): String {
