@@ -18,7 +18,7 @@ import org.bukkit.permissions.PermissionDefault
 import ray.mintcat.linkcoreplus.Helper
 import ray.mintcat.linkcoreplus.LinkCorePlus
 import ray.mintcat.linkcoreplus.wizard.WizardFeed.toWizardType
-@BaseCommand(name = "wizard",aliases = ["wizvar"],permissionDefault = PermissionDefault.OP)
+@BaseCommand(name = "wizard",aliases = ["wizvar"],permission = "wizard.damin")
 class WizardCommand:BaseMainCommand(),Helper {
 
     override val system: String

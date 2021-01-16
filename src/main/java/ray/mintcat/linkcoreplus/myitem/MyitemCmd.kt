@@ -12,7 +12,7 @@ import ray.mintcat.linkcoreplus.LinkCorePlus
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-@BaseCommand(name = "linkcoreplus", aliases = ["link", "linkcore"], permissionDefault = PermissionDefault.OP)
+@BaseCommand(name = "linkcoreplus", aliases = ["link", "linkcore"], permission = "linkpro.admin")
 class MyitemCmd : BaseMainCommand() {
 
     @SubCommand
