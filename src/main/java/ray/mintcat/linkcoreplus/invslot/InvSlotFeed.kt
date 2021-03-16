@@ -1,7 +1,8 @@
 package ray.mintcat.linkcoreplus.invslot
 
 import io.izzel.taboolib.TabooLibAPI
-import io.izzel.taboolib.util.Features
+import io.izzel.taboolib.kotlin.kether.KetherShell
+import io.izzel.taboolib.kotlin.kether.common.util.LocalizedException
 import io.izzel.taboolib.util.item.ItemBuilder
 import io.izzel.taboolib.util.item.Items
 import org.bukkit.Bukkit
@@ -27,7 +28,8 @@ object InvSlotFeed {
         val invSlotIsList = mapInvSlotIs[player] ?: return
         for (invSlotIs in invSlotIsList) {
             val slots = player.inventory.getItem(invSlotIs.slots)
-            if (Items.isNull(slots)) {
+            val flag = LinkCorePlus.invslots.getStringColored("Flag", "&010000")
+            if (Items.isNull(slots) || Items.hasLore(slots,flag)) {
                 player.inventory.setItem(invSlotIs.slots, invSlotIs.itemStack)
             }
         }
@@ -49,7 +51,7 @@ object InvSlotFeed {
             val damage = TabooLibAPI.getPluginBridge()
                 .setPlaceholders(player, LinkCorePlus.invslots.getStringColored("InvSlot.${it}.item.damage", "0"))
             list.add(
-                InvSlotIs(toItem(name, lore, type, amount.toInt(),damage.toInt()), it)
+                InvSlotIs(toItem(name, lore, type, amount.toInt(), damage.toInt()), it)
             )
         }
         mapInvSlotIs[player] = list
@@ -61,18 +63,27 @@ object InvSlotFeed {
         }
     }
 
-    fun runAction(action: String, player: Player) {
-        when (action.split(": ")[0]) {
-            "cmdP", "command=player" -> Features.dispatchCommand(player, action.split(": ")[1])
-            "cmdO", "command=op" -> Features.dispatchCommand(player, action.split(": ")[1], true)
-            "cmdS", "command=server" -> Features.dispatchCommand(action.split(": ")[1])
-            "tell" -> player.sendMessage(action.split(": ")[1])
-            else -> return
+    fun eval(player: Player, action: List<String>) {
+        try {
+            KetherShell.eval(action) {
+                sender = player
+            }
+        } catch (e: LocalizedException) {
+            e.print()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    fun LocalizedException.print() {
+        println("[Ketherx] Unexpected exception while parsing kether shell:")
+        localizedMessage.split("\n").forEach {
+            println("[Ketherx] $it")
         }
     }
 
 
-    fun toItem(name: String, lore: List<String>, type: String, amount: Int,damage:Int): ItemStack {
+    fun toItem(name: String, lore: List<String>, type: String, amount: Int, damage: Int): ItemStack {
         val itemStack = ItemBuilder(Material.matchMaterial(type) ?: Material.AIR)
         itemStack.lore(lore)
         itemStack.name(name)

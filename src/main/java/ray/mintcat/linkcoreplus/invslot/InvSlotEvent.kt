@@ -1,5 +1,7 @@
 package ray.mintcat.linkcoreplus.invslot
 
+import com.sucy.skill.api.event.PlayerManaGainEvent
+import com.sucy.skill.api.event.PlayerManaLossEvent
 import io.izzel.taboolib.TabooLibAPI
 import io.izzel.taboolib.module.inject.TListener
 import io.izzel.taboolib.util.item.Items
@@ -8,6 +10,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import ray.mintcat.linkcoreplus.LinkCorePlus
 import ray.mintcat.linkcoreplus.invslot.InvSlotFeed.has
 
@@ -28,17 +31,33 @@ class InvSlotEvent : Listener {
         InvSlotFeed.initializationInv(player)
         if (list.has(event.currentItem ?: return, event.slot)) {
             event.isCancelled = true
-            val actions = TabooLibAPI.getPluginBridge()
-                .setPlaceholders(player, LinkCorePlus.invslots.getStringList("InvSlot.${event.slot}.action"))
-            actions.forEach {
-                InvSlotFeed.runAction(it, player)
-            }
+            InvSlotFeed.eval(player, LinkCorePlus.invslots.getStringList("InvSlot.${event.slot}.action"))
             return
         }
         val flag = LinkCorePlus.invslots.getStringColored("Flag", "&010000")
-        if (Items.hasLore(event.currentItem,flag)){
+        if (Items.hasLore(event.currentItem, flag)) {
             event.currentItem.amount = 0
         }
 
+    }
+
+    @EventHandler
+    fun onMana(event: PlayerManaGainEvent) {
+        InvSlotFeed.loadItems(event.playerData.player)
+        InvSlotFeed.initializationInv(event.playerData.player)
+    }
+
+    @EventHandler
+    fun onDrop(event: PlayerDropItemEvent) {
+        val flag = LinkCorePlus.invslots.getStringColored("Flag", "&010000")
+        if (Items.hasLore(event.itemDrop.itemStack, flag)) {
+            event.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun onMana(event: PlayerManaLossEvent) {
+        InvSlotFeed.loadItems(event.playerData.player)
+        InvSlotFeed.initializationInv(event.playerData.player)
     }
 }

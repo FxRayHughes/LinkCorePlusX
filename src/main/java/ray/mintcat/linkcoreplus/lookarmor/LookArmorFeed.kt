@@ -28,9 +28,7 @@ object LookArmorFeed {
         menu.event {
             it.isCancelled = true
             if (config.getStringList("Slots.${it.rawSlot}.action") != null){
-                TabooLibAPI.getPluginBridge().setPlaceholders(player, config.getStringListColored("Slots.${it.rawSlot}.action")).forEach { action ->
-                    InvSlotFeed.runAction(action,player)
-                }
+                InvSlotFeed.eval(player, config.getStringList("Slots.${it.rawSlot}.action"))
             }
 
         }

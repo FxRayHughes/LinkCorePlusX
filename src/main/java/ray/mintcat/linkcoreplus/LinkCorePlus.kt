@@ -4,7 +4,6 @@ import io.izzel.taboolib.loader.Plugin
 import io.izzel.taboolib.module.config.TConfig
 import io.izzel.taboolib.module.inject.TInject
 import ray.mintcat.linkcoreplus.invslot.InvSlotFeed
-import ray.mintcat.linkcoreplus.myitem.MyitemFeed
 
 object LinkCorePlus: Plugin() {
 
@@ -25,7 +24,6 @@ object LinkCorePlus: Plugin() {
         private set
 
     override fun onEnable() {
-        MyitemFeed.loadModel()
         InvSlotFeed.loadModel()
     }
 }

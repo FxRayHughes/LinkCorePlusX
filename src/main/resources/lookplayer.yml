@@ -13,16 +13,10 @@ Slots:
         - "xxx"
         - "xxx"
     action:
-      - "command=player: user 巴拉巴拉"
-      - "command=op: OP指令"
-      - "command=server: 服务器指令"
-      - "tell: 发送消息 支持papi %player_name%"
+      - 'tell papi color *"Link是傻逼"'
   2:
     item:
       #Type: MainHand / OffHand / Boots / Helmet / Leggings / Chest
       type: "MainHand"
     action:
-      - "command=player: user 巴拉巴拉"
-      - "command=op: OP指令"
-      - "command=server: 服务器指令"
-      - "tell: 发送消息 支持papi %player_name%"
+      - 'tell papi color *"Link是傻逼"'

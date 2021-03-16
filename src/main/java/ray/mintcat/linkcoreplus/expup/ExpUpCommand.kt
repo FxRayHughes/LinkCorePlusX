@@ -10,22 +10,18 @@ import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.permissions.PermissionDefault
-import org.serverct.ersha.jd.AttributeAPI
 import ray.mintcat.linkcoreplus.Helper
 import ray.mintcat.linkcoreplus.LinkCorePlus
-import ray.mintcat.linkcoreplus.myitem.MyitemAttribute
-import ray.mintcat.linkcoreplus.myitem.MyitemFeed
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-@BaseCommand(name = "LinkExp",permissionDefault = PermissionDefault.OP)
+@BaseCommand(name = "LinkExp",permission = "*")
 class ExpUpCommand:BaseMainCommand(),Helper {
 
     override val system: String
         get() = LinkCorePlus.settings.getStringColored("pluginName")
 
-    @SubCommand
+    @SubCommand(permission = "*")
     var give: BaseSubCommand = object : BaseSubCommand() {
         override fun getDescription(): String {
             return "给玩家经验"
