@@ -3,6 +3,7 @@ package ray.mintcat.linkcoreplus
 import io.izzel.taboolib.loader.Plugin
 import io.izzel.taboolib.module.config.TConfig
 import io.izzel.taboolib.module.inject.TInject
+import org.serverct.ersha.manager.read.sub.AttributeValueRead
 import ray.mintcat.linkcoreplus.invslot.InvSlotFeed
 
 object LinkCorePlus: Plugin() {
@@ -23,7 +24,12 @@ object LinkCorePlus: Plugin() {
     lateinit var attribute: TConfig
         private set
 
+    @TInject(value = ["message.yml"], locale = "LOCALE-PRIORITY")
+    lateinit var message: TConfig
+        private set
+
     override fun onEnable() {
         InvSlotFeed.loadModel()
+        AttributeValueRead().unregister()
     }
 }

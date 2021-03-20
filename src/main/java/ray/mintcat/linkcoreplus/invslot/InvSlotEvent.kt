@@ -11,6 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import ray.mintcat.linkcoreplus.LinkCorePlus
 import ray.mintcat.linkcoreplus.invslot.InvSlotFeed.has
 
@@ -39,6 +40,15 @@ class InvSlotEvent : Listener {
             event.currentItem.amount = 0
         }
 
+    }
+
+    @EventHandler
+    fun onPlayerItemHeldEvent(event: PlayerItemHeldEvent) {
+        val item = event.player.inventory.getItem(event.newSlot)
+        val flag = LinkCorePlus.invslots.getStringColored("Flag", "&010000")
+        if (Items.hasLore(item, flag)) {
+            event.isCancelled = true
+        }
     }
 
     @EventHandler

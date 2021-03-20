@@ -35,7 +35,7 @@ object LookArmorFeed {
         menu.open(player)
     }
 
-    private fun itemBuilder(slot: Int, player: Player):ItemStack{
+    fun itemBuilder(slot: Int, player: Player):ItemStack{
         return when (val type = config.getStringColored("Slots.$slot.item.type"," ").papi(player)){
             "MainHand" -> player.inventory.itemInMainHand ?: ItemStack(Material.AIR)
             "OffHand" -> player.inventory.itemInOffHand ?: ItemStack(Material.AIR)

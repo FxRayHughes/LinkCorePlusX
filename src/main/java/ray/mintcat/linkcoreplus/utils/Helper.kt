@@ -1,43 +1,42 @@
-package ray.mintcat.linkcoreplus
+package ray.mintcat.linkcoreplus.utils
 
-import io.izzel.taboolib.Version
+import io.izzel.taboolib.kotlin.kether.KetherShell
+import io.izzel.taboolib.kotlin.kether.common.util.LocalizedException
 import io.izzel.taboolib.module.inject.TInject
 import io.izzel.taboolib.module.locale.TLocale
 import io.izzel.taboolib.util.lite.cooldown.Cooldown
 import org.bukkit.Effect
-import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import ray.mintcat.linkcoreplus.LinkCorePlus
 
 interface Helper {
 
-    val system: String
-
     fun CommandSender.info(value: String) {
-        this.sendMessage("${system}${value.replace("&", "§")}")
+        this.sendMessage("${Global.system}${value.replace("&", "§")}")
         if (this is Player && !Global.cd.isCooldown(this.name)) {
             this.playSound(this.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
         }
     }
 
     fun CommandSender.error(value: String) {
-        this.sendMessage("§8[§c ${system} §8] §7${value.replace("&", "§")}")
+        this.sendMessage("§c${Global.system}§7${value.replace("&", "§")}")
         if (this is Player && !Global.cd.isCooldown(this.name)) {
             this.playSound(this.location, Sound.ENTITY_VILLAGER_NO, 1f, 1f)
         }
     }
 
     fun Player.info(value: String) {
-        this.sendMessage("${system}${value.replace("&", "§")}")
+        this.sendMessage("${Global.system}${value.replace("&", "§")}")
         if (!Global.cd.isCooldown(this.name)) {
             this.playSound(this.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
         }
     }
 
     fun Player.error(value: String) {
-        this.sendMessage("§8[§c ${system} §8] §7${value.replace("&", "§")}")
+        this.sendMessage("§c${Global.system}§7${value.replace("&", "§")}")
         if (!Global.cd.isCooldown(this.name)) {
             this.playSound(this.location, Sound.ENTITY_VILLAGER_NO, 1f, 1f)
         }
@@ -55,5 +54,26 @@ interface Helper {
 
         @TInject
         val cd = Cooldown("command.sound", 50)
+        @TInject
+        val system = LinkCorePlus.settings.getStringColored("pluginName")
+    }
+
+    fun eval(player: Player, action: List<String>) {
+        try {
+            KetherShell.eval(action) {
+                sender = player
+            }
+        } catch (e: LocalizedException) {
+            e.print()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    fun LocalizedException.print() {
+        println("[Ketherx] Unexpected exception while parsing kether shell:")
+        localizedMessage.split("\n").forEach {
+            println("[Ketherx] $it")
+        }
     }
 }

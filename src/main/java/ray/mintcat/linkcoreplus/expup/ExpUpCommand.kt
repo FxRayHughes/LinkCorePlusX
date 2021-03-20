@@ -2,7 +2,6 @@ package ray.mintcat.linkcoreplus.expup
 
 import com.sucy.skill.SkillAPI
 import com.sucy.skill.api.enums.ExpSource
-import com.sucy.skill.api.player.PlayerData
 import io.izzel.taboolib.TabooLibAPI
 import io.izzel.taboolib.module.command.base.*
 import io.izzel.taboolib.util.Features
@@ -10,16 +9,13 @@ import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import ray.mintcat.linkcoreplus.Helper
+import ray.mintcat.linkcoreplus.utils.Helper
 import ray.mintcat.linkcoreplus.LinkCorePlus
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @BaseCommand(name = "LinkExp",permission = "*")
-class ExpUpCommand:BaseMainCommand(),Helper {
-
-    override val system: String
-        get() = LinkCorePlus.settings.getStringColored("pluginName")
+class ExpUpCommand:BaseMainCommand(), Helper {
 
     @SubCommand(permission = "*")
     var give: BaseSubCommand = object : BaseSubCommand() {

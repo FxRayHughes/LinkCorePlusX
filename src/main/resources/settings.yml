@@ -1,5 +1,13 @@
-AttributeMax:
-  stats_damage_max: 999.0
-AttributeMaxAbs:
-  stats_damage_max: 999.0
 pluginName: " "
+cooldown:
+  # CD时以下技能也无法释放
+  skills:
+    - "魔术飞弹"
+  lore: "冷却时间: "
+  action:
+    - ""
+bind:
+  can: "可绑定的物品"
+  to: "物品锁定: {player}"
+  binv:
+    - "仓库"
