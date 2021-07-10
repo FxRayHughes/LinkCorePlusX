@@ -28,6 +28,10 @@ object LinkCorePlus: Plugin() {
     lateinit var message: TConfig
         private set
 
+    @TInject(value = ["streng.yml"], locale = "LOCALE-PRIORITY")
+    lateinit var streng: TConfig
+        private set
+
     override fun onEnable() {
         InvSlotFeed.loadModel()
         AttributeValueRead().unregister()

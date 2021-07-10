@@ -1,0 +1,77 @@
+#成功= 0~basics[等级基础值] + gem[强化石影响] + value[特殊值] >= basics[等级基础值]
+#返回true 则强化成功
+info:
+  - "§7类型: §f魂灯"
+#识别的是 fix 号不要修改! +后面的数字就是当前等级
+fix: " §6+"
+name: "{name} §6+{level}"
+lore: "{lore} ({add} )"
+add: "+{add}"
+#只用作显示
+#变量:
+# %streng_强化等级%
+# %streng_成功率%
+confs: "(({other} + {gems}) - {basics}) / {basics} * 100"
+#other是一个变量强化积分 gems 是强化石系数 now是当前随机数 随机数是 0~base ,base是你等级里写的
+#can 返回true就是强化成功 false是失败 可以用papi变量
+can: "({other} + {gems} + {random}) >= {basics}"
+levels:
+  0:
+    basics: 0
+    add: "0"
+    check: [ ]
+  1:
+    #50%
+    basics: 50
+    add: "2"
+    check: [ ]
+    down: 0-0
+    items:
+      - "强化石 | 20"
+    action:
+      success:
+        - 'tell papi *"强化 {item} 成功 现在是{level}"'
+        - |
+          for i in players then {
+            switch &i
+            tell *"Hello World!"
+          }
+      fail:
+        - 'tell papi *"强化 {item} 失败 现在是{level} 掉了{down}级"'
+  2:
+    basics: 60
+    add: "4"
+    check: [ ]
+    down: 1-1
+  3:
+    basics: 70
+    add: "5"
+    check: [ ]
+    down: 1-2
+  4:
+    basics: 80
+    add: "5"
+    check: [ ]
+    down: 1-2
+#模糊匹配的越全越好
+attribute:
+  - "魔杖伤害"
+  - "物理伤害"
+gem: "强化成功系数"
+Menu:
+  Title: "&7[&a查看玩家信息 &f%player_name% &7]"
+  Rows: 5
+Slots:
+  10:
+    item:
+      type: "APPLE"
+      name: "Slot?"
+      damage: "0"
+      amount: "%player_level%"
+      lore:
+        - "%streng_强化等级%"
+        - "%streng_成功率%"
+    action:
+      - 'tell papi color *"Link是傻逼"'
+    #开始强化 || 放入强化石
+    about: "开始强化"

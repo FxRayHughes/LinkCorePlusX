@@ -1,6 +1,5 @@
 package ray.mintcat.linkcoreplus.bind
 
-import io.izzel.taboolib.cronus.CronusUtils
 import io.izzel.taboolib.util.item.ItemBuilder
 import io.izzel.taboolib.util.item.Items
 import org.bukkit.entity.Player
@@ -45,11 +44,11 @@ object BindItem : Helper {
     }
 
     fun unBind(player: Player) {
-        if (Items.isNull(player.inventory.itemInMainHand)) {
+        if (Items.isNull(player.inventory.itemInMainHand) || !Items.hasLore(player.inventory.itemInMainHand)) {
             return
         }
         val flag = LinkCorePlus.settings.getStringColored("bind.to").replace("{player}", "")
-        val info = player.inventory.itemInMainHand.itemMeta.lore.firstOrNull { it.indexOf(flag) != -1 }!!
+        val info = player.inventory.itemInMainHand.itemMeta.lore.firstOrNull { it.indexOf(flag) != -1 } ?: return
         Items.replaceLore(player.inventory.itemInMainHand, info, LinkCorePlus.settings.getStringColored("bind.can"))
     }
 

@@ -11,3 +11,9 @@ bind:
   to: "物品锁定: {player}"
   binv:
     - "仓库"
+  bcmd:
+    - "spawn"
+looks:
+  key: " §7外观: "
+  format: "{key}{name} ({oldname})"
+  formatold: "{key} ({oldname})"

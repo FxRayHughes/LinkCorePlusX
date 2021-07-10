@@ -19,12 +19,20 @@ class ReadLore : DescriptionRead(
             val info = lore.replace("[^IVXLCDM]".toRegex(), "")
             return arrayOf(Utils.toInt(info), Utils.toInt(info))
         }
-        if (lore.replace("[^+]".toRegex(), "").contains("++")) {
-            val number =
-                (Features.compileScript(lore.replace("[^0-9+-.*/]".toRegex(), ""))?.eval() ?: 0.0).toString().toDouble()
-            return arrayOf(number, number)
+        var lores = lore.replace("[^0-9+-.*/]".toRegex(), "")
+        if (lore.contains("%")) {
+            // +25 XXX (+25)
+            val info = lore.replace(")", "(").split("(").map { it.replace("[^0-9+-.*/]".toRegex(), "") }
+            val adds = if (info.size > 1) {
+                info[1]
+            } else {
+                "0"
+            }
+            lores = "(${info[0]} * (${adds.replace("[^0-9]".toRegex(), "")} / 100 ) ) + ${info[0]}"
         }
-        return arrayOf(0.0, 0.0)
+        val number =
+            (Features.compileScript(lores)?.eval() ?: 0.0).toString().toDouble()
+        return arrayOf(number, number)
     }
 
 }

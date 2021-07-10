@@ -1,5 +1,11 @@
 package ray.mintcat.linkcoreplus.utils
 
+import io.izzel.taboolib.kotlin.kether.KetherShell
+import io.izzel.taboolib.kotlin.kether.common.util.LocalizedException
+import io.izzel.taboolib.util.Coerce
+import org.bukkit.entity.Player
+import java.util.concurrent.CompletableFuture
+
 object Utils {
 
     fun toInt(m: String): Int {
@@ -21,6 +27,45 @@ object Utils {
             }
         }
         return sum
+    }
+
+    fun eval(player: Player, action: List<String>) {
+        try {
+            KetherShell.eval(action) {
+                sender = player
+            }
+        } catch (e: LocalizedException) {
+            e.print()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    fun check(player: Player, condition: List<String>): CompletableFuture<Boolean> {
+        return if (condition.isEmpty()) {
+            CompletableFuture.completedFuture(true)
+        } else {
+            try {
+                KetherShell.eval(condition) {
+                    sender = player
+                }.thenApply {
+                    Coerce.toBoolean(it)
+                }
+            } catch (e: LocalizedException) {
+                e.print()
+                CompletableFuture.completedFuture(false)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                CompletableFuture.completedFuture(false)
+            }
+        }
+    }
+
+    fun LocalizedException.print() {
+        println("[Kether] Unexpected exception while parsing kether shell:")
+        localizedMessage.split("\n").forEach {
+            println("[Kether] $it")
+        }
     }
 
 }

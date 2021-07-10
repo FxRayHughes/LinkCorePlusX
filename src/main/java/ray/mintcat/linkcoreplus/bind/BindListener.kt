@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import ray.mintcat.linkcoreplus.LinkCorePlus
 import ray.mintcat.linkcoreplus.utils.Helper
@@ -32,10 +33,7 @@ class BindListener : Listener, Message {
     fun onInventoryClickEvent(event: InventoryClickEvent) {
         val flag = LinkCorePlus.settings.getStringList("bind.binv")
         val item = event.currentItem
-        if (Items.isNull(item)) {
-            return
-        }
-        if (!BindItem.hasBind(item)) {
+        if (Items.isNull(item) || BindItem.whoBind(item) == null) {
             return
         }
         val inv = event.inventory.name
@@ -50,10 +48,7 @@ class BindListener : Listener, Message {
     @EventHandler
     fun onPlayerCommandPreprocessEvent(event: PlayerCommandPreprocessEvent) {
         val item = event.player.inventory.itemInMainHand
-        if (Items.isNull(item) || !Items.hasLore(item)) {
-            return
-        }
-        if (!BindItem.canBind(item) || !BindItem.hasBind(item)) {
+        if (Items.isNull(item) || !Items.hasLore(item) || BindItem.whoBind(item) == null) {
             return
         }
         val list = LinkCorePlus.settings.getStringList("bind.bcmd")
@@ -88,7 +83,11 @@ class BindListener : Listener, Message {
     @EventHandler
     fun onPlayerItemHeldEvent(event: PlayerItemHeldEvent) {
         val item = event.player.inventory.getItem(event.newSlot)
-        if (!Items.hasLore(item) || BindItem.canBind(item)) {
+        if (Items.isNull(item) ||!Items.hasLore(item)) {
+            return
+        }
+        if (BindItem.canBind(item)) {
+            event.player.errors("Bind", "unbind", "请绑定")
             return
         }
         val who = BindItem.whoBind(item) ?: return
@@ -96,8 +95,15 @@ class BindListener : Listener, Message {
             event.isCancelled = true
             Features.dropItem(event.player, item)
             item.amount = 0
-            event.player.error("这不是属于你的物品!")
             event.player.errors("Bind", "unheld", "这不是属于你的物品!")
+        }
+    }
+
+    @EventHandler
+    fun onPlayerInteractEvent(event: PlayerInteractEvent) {
+        val item = event.item
+        if (!Items.isNull(item) && BindItem.canBind(item)) {
+            event.player.errors("Bind", "unbind", "请绑定")
         }
     }
 

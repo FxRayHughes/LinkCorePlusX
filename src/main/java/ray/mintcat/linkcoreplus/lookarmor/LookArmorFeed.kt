@@ -53,7 +53,7 @@ object LookArmorFeed {
         }
     }
 
-    private fun String.papi(player: Player): String {
+    fun String.papi(player: Player): String {
         return TabooLibAPI.getPluginBridge().setPlaceholders(player, this)
     }
 

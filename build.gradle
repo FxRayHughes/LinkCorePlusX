@@ -8,8 +8,8 @@ group = 'ray.mintcat.linkcoreplus'
 version = '4.0.0'
 
 taboolib {
-    tabooLibVersion = '5.59'
-    loaderVersion = '2.8'
+    tabooLibVersion = '5.7.2'
+    loaderVersion = '3.0.4'
     classifier = null
 }
 
